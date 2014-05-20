@@ -50,7 +50,16 @@ public class MainActivity extends Activity {
     }
     
     protected void loadInjectJS() {
-        mWebView.loadUrl(getJs("inject.js"));
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            mWebView.evaluateJavascript(getJs("inject.js"), new ValueCallback<String>() {
+                @Override
+                public void onReceiveValue(String value) {
+                    Log.d("onReceiveValue: ", value);
+                }
+            });
+        } else {
+            mWebView.loadUrl(getJs("inject.js"));
+        }
     }
     
     protected void doSomething() {
